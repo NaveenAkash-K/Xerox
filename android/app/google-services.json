@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "922040089807",
+    "firebase_url": "https://xerox-800f7-default-rtdb.firebaseio.com",
+    "project_id": "xerox-800f7",
+    "storage_bucket": "xerox-800f7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922040089807:android:b9bc9d55102860dcbdcbba",
+        "android_client_info": {
+          "package_name": "com.example.xerox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "922040089807-fe5krc2a2ve2ks68m0m1uqo0rdki2q9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBp4NxcoTUmhaFFrPIQ6RUw-AL4ik3FSjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922040089807-fe5krc2a2ve2ks68m0m1uqo0rdki2q9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
