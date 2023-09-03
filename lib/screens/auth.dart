@@ -15,6 +15,7 @@ class _AuthState extends State<Auth> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final userNameController = TextEditingController();
+  final registerNoController = TextEditingController();
 
   var isLogin = false;
   var isAuthentication = false;
@@ -23,20 +24,41 @@ class _AuthState extends State<Auth> {
   final fireStore = FirebaseFirestore.instance;
 
   void signUp() async {
+    if (emailController.text.trim().isEmpty ||
+        !emailController.text.contains('@') ||
+        passwordController.text.trim().length < 6 ||
+        userNameController.text.trim().isEmpty ||
+        registerNoController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid Input. Please Check again!'),
+        ),
+      );
+      return;
+    }
     setState(() {
       isAuthentication = true;
     });
 
-    final userCredentials = await firebaseAuth.createUserWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text,
-    );
+    try {
+      final userCredentials = await firebaseAuth.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+    } on FirebaseAuthException catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.code),
+        ),
+      );
+    }
 
-    fireStore.collection('users').doc(userCredentials.user!.uid).set({
-      'uid': userCredentials.user!.uid,
+    fireStore.collection('users').doc(firebaseAuth.currentUser!.uid).set({
+      'uid': firebaseAuth.currentUser!.uid,
       'email': emailController.text,
       'username': userNameController.text,
       'password': passwordController.text,
+      'registerNo': registerNoController.text,
       'userType': "student",
     });
 
@@ -46,14 +68,31 @@ class _AuthState extends State<Auth> {
   }
 
   void login() async {
+    if (emailController.text.trim().isEmpty ||
+        !emailController.text.contains('@') ||
+        passwordController.text.trim().length < 6) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Invalid Input. Please Check again!'),
+        ),
+      );
+      return;
+    }
     setState(() {
       isAuthentication = true;
     });
-
-    final userCredentials = await firebaseAuth.signInWithEmailAndPassword(
-      email: emailController.text,
-      password: passwordController.text,
-    );
+    try {
+      final userCredentials = await firebaseAuth.signInWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+    } on FirebaseAuthException catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(error.code),
+        ),
+      );
+    }
 
     setState(() {
       isAuthentication = false;
@@ -103,6 +142,18 @@ class _AuthState extends State<Auth> {
                       Icon(Icons.email),
                       SizedBox(width: 10),
                       Text("Email")
+                    ],
+                  ),
+                ),
+              ),
+              TextField(
+                controller: registerNoController,
+                decoration: const InputDecoration(
+                  label: Row(
+                    children: [
+                      Icon(Icons.numbers_rounded),
+                      SizedBox(width: 10),
+                      Text("Register No")
                     ],
                   ),
                 ),

@@ -41,9 +41,12 @@ class MyApp extends StatelessWidget {
                 builder: (context, userSnapshot) {
                   // if (userSnapshot.connectionState == ConnectionState.done) {
                   final userType = userSnapshot.data?['userType'];
+                  final username = userSnapshot.data?['username'];
 
                   if (userType == 'student') {
-                    return StudentScreen();
+                    return StudentScreen(
+                      username: username,
+                    );
                   } else if (userType == 'admin') {
                     return AdminScreen();
                   } else {
